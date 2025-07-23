@@ -23,7 +23,7 @@ jobs:
           dotnet-version: '9.0.x'
           
       - name: Restore
-        run: dotnet restore ./CurrentTimeService.sln
+        run: dotnet restore ./WebApplication1.sln
         
       - name: Build
         run: dotnet build ./WebApplication1.sln --configuration Release --no-restore
