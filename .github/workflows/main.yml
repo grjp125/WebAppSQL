@@ -1,40 +1,39 @@
-name: Build and Deploy to Azure Web App
+name: Publish 🚀
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main
+    - main
 
 env:
-  AZURE_WEBAPP_NAME: 'webgithub'   # Replace with your Azure Web App name
-  AZURE_WEBAPP_PACKAGE_PATH: 'D:\a\WebAppSQL\WebAppSQL\WebApplication1'               # Set this to the path to your project
-  DOTNET_VERSION: '9.0.x'                      # Set the .NET version
+  AZURE_WEBAPP_NAME: webgithub
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
 
 jobs:
-  build-and-deploy:
-    runs-on: windows-latest
+  publish:
+    runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore dependencies
-        run: dotnet restore WebApplication1.sln # Replace with your solution file name
-
+          dotnet-version: '9.0.x'
+          
+      - name: Restore
+        run: dotnet restore ./WebApplication1.sln
+        
       - name: Build
-        run: dotnet build --configuration Release --no-restore
-
+        run: dotnet build ./WebApplication1.sln --configuration Release --no-restore
+        
       - name: Publish
-        run: dotnet publish WebApplication1.csproj --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish # Replace with your project file name
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+        run: dotnet publish ./WebApplication1.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+        
+      - name: Deployment
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
