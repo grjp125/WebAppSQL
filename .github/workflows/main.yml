@@ -1,40 +1,35 @@
-name: Publish 🚀
+name: Deploy .NET Core Web App to Azure
 
 on:
-  workflow_dispatch:
   push:
     branches:
-    - main
-
-env:
-  AZURE_WEBAPP_NAME: webgithub
-  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+      - main  # or your deployment branch
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    
+  build-and-deploy:
+    runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
-          
-      - name: Restore
-        run: dotnet restore ./WebApplication1.sln
-        
-      - name: Build
-        run: dotnet build ./WebApplication1.sln --configuration Release --no-restore
-        
-      - name: Publish
-        run: dotnet publish ./WebApplication1.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-        
-      - name: Deployment
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'  # Adjust based on your project
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Publish
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: webgithub
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./publish
