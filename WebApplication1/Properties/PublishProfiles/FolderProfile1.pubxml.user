@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\rjg\Desktop\webappsql</_PublishTargetUrl>
+    <History>True|2025-07-22T09:43:25.5351467Z||;True|2025-07-22T15:43:17.4955767+08:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DatabaseConnection">
+      <Value>Server=RPGARDUCE-NB2\SQLEXPRESS%3bDatabase=myapp%3bTrusted_Connection=True%3bMultipleActiveResultSets=true</Value>
+    </DestinationConnectionStrings>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=RPGARDUCE-NB2\SQLEXPRESS%3bDatabase=myapp%3bTrusted_Connection=True%3bMultipleActiveResultSets=true</Value>
+    </DestinationConnectionStrings>
+    <DestinationConnectionStrings Include="ProductionConnection">
+      <Value>Server=RPGARDUCE-NB2\SQLEXPRESS.database.windows.net%3bDatabase=myapp%3bUser ID=sa%3bPassword=P%40ssword1234%3bEncrypt=True%3bTrustServerCertificate=True%3bConnection Timeout=30%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
